@@ -1,37 +1,50 @@
 package Video15_BinarySrchInterviewQns;
 
 public class ZRough1 {
-
-	static int cealing(int[] a, int target, boolean isCealing) {
-		int SI =0;
-		int EI =a.length-1;
-		while(SI<=EI) {
-			int MI =SI+(EI-SI)/2;
-			
-			if(target == a[MI]) {
-				return MI;
-			}
-			if(isCealing) {
-			  if(target<a[MI]) {
-					EI=MI-1;
-				}else
-			  		SI=MI+1;
-			}
-			else {
-				if(target<a[MI]) {
-					SI=MI+1;
-				}else
-					EI=MI-1;
-			}
-		}
-		if(isCealing) {
-			return a[SI];
+	
+	static int targetSearch(int[] a, int target) {
+		int s =0;
+		int e = a.length-1;
+		int p =pivot(a);
+		int firstSrch = binarySearch(a, target, s, p);
+		if(firstSrch !=-1) {
+			return firstSrch;
 		}else
-			return a[EI];
+			return binarySearch(a, target, p, e);
+	}
+
+	static int pivot(int[] a) {
+		int s = 0;
+		int e = a.length - 1;
+		while (s <= e) {
+			int m = s + (e - s) / 2;
+			if (a[m] > a[m + 1]) {
+				return m;
+			} else if (a[m] < a[m - 1]) {
+				return m - 1;
+			} else if (a[s] < a[m]) {
+				s = m + 1;
+			} else if (a[s] > a[m]) {
+				e = m - 1;
+			}
+		}return -1;
+	}
+
+	static int binarySearch(int[] a, int target, int s, int e) {
+		while (s <= e) {
+			int m = s + (e - s) / 2;
+			if (target == a[m]) {
+				return m;
+			} else if (target < a[m]) {
+				e = m - 1;
+			} else
+				s = m + 1;
+		}
+		return -1;
 	}
 
 	public static void main(String[] args) {
-		int[] a= {1,2,3,4,5,7,9};
-		System.out.println(cealing(a, 6, true));
+		int[] a = { 5, 6, 7, 1, 2, 3, 4 };
+		System.out.println(targetSearch(a, 4));
 	}
 }
